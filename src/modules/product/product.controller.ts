@@ -40,15 +40,25 @@ export class ProductController {
       limit: Number(limit),
     };
 
-    if (q) query.q = q as string;
-    if (category) query.category = category as string;
+    if (q && typeof q === "string") query.q = q;
+    if (category && typeof category === "string") query.category = category;
     if (tags) {
       query.tags = Array.isArray(tags) ? (tags as string[]) : [tags as string];
     }
-    if (status) query.status = status as "active" | "inactive";
-    if (minPrice) query.minPrice = Number(minPrice);
-    if (maxPrice) query.maxPrice = Number(maxPrice);
-    if (sort) query.sort = sort as "newest" | "price_asc" | "price_desc";
+    if (status && (status === "active" || status === "inactive")) {
+      query.status = status;
+    }
+    if (minPrice !== undefined && minPrice !== "") {
+      const minPriceNum = Number(minPrice);
+      if (!isNaN(minPriceNum)) query.minPrice = minPriceNum;
+    }
+    if (maxPrice !== undefined && maxPrice !== "") {
+      const maxPriceNum = Number(maxPrice);
+      if (!isNaN(maxPriceNum)) query.maxPrice = maxPriceNum;
+    }
+    if (sort && (sort === "newest" || sort === "price_asc" || sort === "price_desc")) {
+      query.sort = sort;
+    }
 
     const products = await this.productService.list(query);
     res.json(ok(products.map((p) => this.toProductDto(p))));

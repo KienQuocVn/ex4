@@ -1,3 +1,8 @@
+import { ObjectId } from "mongodb";
+import type { ProductDoc } from "./product.model.js";
+export type ProductEntity = ProductDoc & {
+    _id: ObjectId;
+};
 export type ProductListQuery = {
     q?: string;
     category?: string;
@@ -11,10 +16,10 @@ export type ProductListQuery = {
 };
 export declare class ProductDatabase {
     private col;
-    create(): Promise<void>;
-    updatedById(): Promise<void>;
-    findById(): Promise<void>;
-    deletedById(): Promise<void>;
-    list(): Promise<void>;
+    create(doc: ProductDoc): Promise<ProductEntity>;
+    updateById(id: string, set: Partial<ProductDoc>): Promise<ProductEntity | null>;
+    findById(id: string): Promise<ProductEntity | null>;
+    deleteById(id: string): Promise<boolean>;
+    list(query: ProductListQuery): Promise<ProductEntity[]>;
 }
 //# sourceMappingURL=product.database.d.ts.map

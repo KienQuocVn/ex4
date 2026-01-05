@@ -92,15 +92,13 @@ export class ProductDatabase {
     // Sort
     let sort: any = {};
     switch (query.sort) {
-      case "newest":
-        sort = { createdAt: -1 };
-        break;
       case "price_asc":
-        sort = { price: 1 };
+        sort = { price: 1, createdAt: -1 };
         break;
       case "price_desc":
-        sort = { price: -1 };
+        sort = { price: -1, createdAt: -1 };
         break;
+      case "newest":
       default:
         sort = { createdAt: -1 };
     }
